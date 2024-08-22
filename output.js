@@ -1,11 +1,14 @@
-//Wed Jul 10 2024 13:03:44 GMT+0000 (Coordinated Universal Time)
+//Thu Aug 22 2024 15:35:57 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
-const $ = new Env("带图评价晒单");
-const bdy_0x19e6e7 = $.isNode() ? require("./sendNotify") : "",
-  bdy_0x10df02 = $.isNode() ? require("./jdCookie.js") : "",
-  bdy_0x53b0cb = require("./function/dylanx"),
-  bdy_0x527dd4 = require("./USER_AGENTS");
+const $ = new Env("东东健康社区");
+const bdy_0x515f57 = $.isNode() ? require("./jdCookie.js") : "",
+  bdy_0x1ada7d = $.isNode() ? require("./sendNotify") : "";
+let bdy_0x159b1c = [],
+  bdy_0x41700b = "",
+  bdy_0x14ee03 = "",
+  bdy_0x223dc8;
+const bdy_0x54aaa3 = [""];
 if (process.env.DY_PROXY) {
   try {
     require("https-proxy-agent");
@@ -21,497 +24,408 @@ if (process.env.DY_PROXY) {
   $.dpost = $.post;
   $.dget = $.get;
 }
-let bdy_0x5137de = [],
-  bdy_0xcc562f = "";
+let bdy_0x5c79ce = $.isNode() ? process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : "" : $.getdata("JD_HEALTH_REWARD_NAME") ? $.getdata("JD_HEALTH_REWARD_NAME") : "";
+function bdy_0x4fda62(_0x4238ea, _0x135910) {
+  try {
+    return _0x4238ea();
+  } catch (_0x5952ee) {
+    return undefined;
+  }
+}
+function bdy_0x553546(_0x47cfee, _0x44b63d) {
+  return _0x47cfee != undefined ? _0x47cfee : _0x44b63d;
+}
 if ($.isNode()) {
-  var bdy_0x3994ef = new Buffer.from("64796C616E", "Hex").toString("utf8");
-  Object.keys(bdy_0x10df02).forEach(_0x1a080 => {
-    bdy_0x5137de.push(bdy_0x10df02[_0x1a080]);
+  Object.keys(bdy_0x515f57).forEach(_0x522d10 => {
+    bdy_0x159b1c.push(bdy_0x515f57[_0x522d10]);
   });
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === "false") {
     console.log = () => {};
   }
 } else {
-  let bdy_0x13838b = $.getdata("CookiesJD") || "[]";
-  bdy_0x13838b = jsonParse(bdy_0x13838b);
-  bdy_0x5137de = bdy_0x13838b.map(_0x3c112d => _0x3c112d.cookie);
-  bdy_0x5137de.reverse();
-  bdy_0x5137de.push(...[$.getdata("CookieJD2"), $.getdata("CookieJD")]);
-  bdy_0x5137de.reverse();
-  bdy_0x5137de = bdy_0x5137de.filter(_0x3a06a9 => _0x3a06a9 !== "" && _0x3a06a9 !== null && _0x3a06a9 !== undefined);
+  bdy_0x159b1c = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map(_0x3b484e => _0x3b484e.cookie)].filter(_0x388c49 => !!_0x388c49);
 }
-if (process.env.DY_PROXY) {
-  const bdy_0x59d212 = require("./function/proxy.js");
-  $.get = bdy_0x59d212.intoRequest($.get.bind($));
-  $.post = bdy_0x59d212.intoRequest($.post.bind($));
-}
-const bdy_0x2e9de6 = process.env.EVALNUM ? process.env.EVALNUM : undefined;
-let bdy_0xa54c7c = process.env.EVAL_WORD_COUNT ?? 10,
-  bdy_0x1cb31f = process.env.ONEVAL ?? false,
-  bdy_0x552b8c = process.env.EVAL_CPKEY ? process.env.EVAL_CPKEY : "",
-  bdy_0x6bf456 = ["垃圾", "质量差", "差评", "好差", "欺骗"],
-  bdy_0x239a20 = ["非常满意的购物体验！商品质量很好，价格实惠。物流迅速，包装严密。非常感谢商家的耐心解答和及时发货，给予8分好评。", "商品质量非常好，价格实惠，物流速度很快。包装完好，没有损坏。非常感谢商家的耐心解答和热情服务，下次还会再来购买。", "这是一次愉快的购物体验，商品质量非常好，价格也很实惠。物流速度快，包装严密。非常感谢商家的耐心服务和及时回复，给予8分好评。", "商品收到了，非常满意！质量可以，价格也还合理。感谢商家客服的热情服务和及时发货，好的话会推荐给朋友们。", "这次购物真是太棒了！商品质量很好，与描述一致。包装仔细，没有损坏。非常感谢商家的认真态度和及时发货，下次还会再来购买。", "质量非常好,与卖家描述的完全一致,真的很喜欢,完全超出期望值,发货速度非常快,物流公司服务态度很好,运送速度很快,店主态度特好,很好很好!质量好而价低廉，很热情的客服，下次还来祝你生意兴隆质量非常好，出乎我的意料包装非常仔细。", "我为什么喜欢在京东买东西，因为今天买明天就可以送到。我为什么每个商品的评价都一样，因为在京东买的东西太多太多了，导致积累了很多未评价的订单，所以我统一用段话作为评价内容。京东购物这么久，有买到很好的产品，也有买到比较坑的产品，如果我用这段话来评价，说明这款产品没问题，至少85分以上，而比较垃圾的产品，我绝对不会偷懒到复制粘贴评价，我绝对会用心的差评，这样其他消费者在购买的时候会作为参考，会影响该商品销量，而商家也会因此改进商品质量。", "感觉物超所值 服务态度还是可以的，没什么太多可挑剔的，再接再厉，祝老板生意兴隆", "这是一条好评段子，花钱的评价，麻烦你们认真点!先说商品质量：产品总体不错，包装严实。再说商家服务：点赞啦。最后点评快递：发货很快。其他就是感谢店家打折送券活动，毕竟便宜好货更实在。希望店家多多优惠，及时通知老客户，促成回购。祝生意兴隆。", "滴滴滴，我来汇报了，东西还行，客服节能有待提高哈，一贯好评啦，快递是真的快，后面再来追评吧，就这样"],
-  bdy_0x25996d = ["赠品", "权益", "非实物", "非卖品", "增值服务", "服务", "券包", "只换不修"],
-  bdy_0x32d3ec = ["送的没花钱哈哈", "东西还还不错", "现在的购物体验越来越好", "以前还没有这么多贴心的赠品、增值服务、权益等服务", "给赞", "算不算白嫖"],
-  bdy_0x192311 = ["以上是我购物感受和体验，仅供参考，也不要只看好评，适合我的不一定适合你。。。。", "总的来说，还可以，我的评价供大家参考借鉴，根据自己情况。。。。", "总之还行，买不了吃亏，买的了上当，嘿嘿！！！！", "就这样，一惯好评啦，不是非常烂一般不会差评", "最后，希望京东越来越好，感恩"],
-  bdy_0x355f78 = [],
-  bdy_0xc58a47 = "",
-  bdy_0x48746b = true;
-!__filename.includes(bdy_0x3994ef) && (bdy_0x48746b = false);
+const bdy_0xfa08f8 = "https://api.m.jd.com/";
 !(async () => {
-  if (!bdy_0x5137de[0]) {
-    const _0x3ece62 = {
-      "open-url": "https://bean.m.jd.com/bean/signIndex.action"
+  if (!bdy_0x159b1c[0]) {
+    const _0x3f530a = {
+      "open-url": "https://bean.m.jd.com/"
     };
-    $.msg($.name, "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取", "https://bean.m.jd.com/bean/signIndex.action", _0x3ece62);
+    $.msg($.name, "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取", "https://bean.m.jd.com/", _0x3f530a);
     return;
   }
-  console.log("当前版本：20240710 差评内容关键词");
-  console.log("每次运行最多20个账号，每个账号最多评价10个商品");
-  console.log("差评关键词变量 EVAL_CPKEY='xxx&yyy' 多个&连接");
-  console.log("问题反馈：https://t.me/dylan_jdpro");
-  if (bdy_0x1cb31f === false) {
-    console.log("\n\n默认不执行, 请设置变量 ONEVAL='true'");
-    return;
-  }
-  bdy_0x552b8c != "" && (console.log("\n合并自定义差评内容关键词"), bdy_0x552b8c.includes("&") ? bdy_0x6bf456 = bdy_0x6bf456.concat(bdy_0x552b8c.split("&")) : bdy_0x6bf456.push(bdy_0x552b8c), bdy_0x6bf456 = [...new Set(bdy_0x6bf456)]);
-  console.log("\n屏蔽差评内容关键词：" + JSON.stringify(bdy_0x6bf456));
-  let _0x5a124d = 0;
-  if (bdy_0x5137de.length > 20) {
-    _0x5a124d = bdy_0x2e9de6 ?? 20;
-  } else {
-    _0x5a124d = bdy_0x5137de.length;
-  }
-  await bdy_0x487412();
-  if (bdy_0xc58a47 == "") {
-    console.log("未知错误，反馈作者修！");
-    return;
-  }
-  for (let _0x2939a0 = 0; _0x2939a0 < _0x5a124d; _0x2939a0++) {
-    if (bdy_0x5137de[_0x2939a0]) {
-      bdy_0xcc562f = bdy_0x5137de[_0x2939a0];
-      $.UserName = decodeURIComponent(bdy_0xcc562f.match(/pt_pin=([^; ]+)(?=;?)/) && bdy_0xcc562f.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-      $.index = _0x2939a0 + 1;
-      $.isLogin = true;
-      $.nickName = "";
-      $.commentWareList = "";
-      $.commentInfoList = "";
-      $.UA = bdy_0x527dd4.UARAM ? bdy_0x527dd4.UARAM(1) : bdy_0x527dd4.USER_AGENT;
-      $.UA = "okhttp/3.12.16;jdmall;android;version/12.4.2;build/99108;";
-      await bdy_0x37e5f4();
-      console.log("\n******开始【京东账号" + $.index + "】" + ($.nickName || $.UserName) + "*********\n");
-      if (!$.isLogin) {
-        const _0x59210f = {
-          "open-url": "https://bean.m.jd.com/bean/signIndex.action"
-        };
-        $.msg($.name, "【提示】cookie已失效", "京东账号" + $.index + " " + ($.nickName || $.UserName) + "\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action", _0x59210f);
-        $.isNode() && (await bdy_0x19e6e7.sendNotify($.name + "cookie已失效 - " + $.UserName, "京东账号" + $.index + " " + $.UserName + "\n请重新登录获取cookie"));
-        continue;
-      }
-      await bdy_0x26af4d();
-      console.log("\n等待10秒...");
-      await $.wait(10000);
+  await bdy_0x3ab857();
+  for (let _0xdba3a3 = 0; _0xdba3a3 < bdy_0x159b1c.length; _0xdba3a3++) {
+    if (bdy_0x159b1c[_0xdba3a3]) {
+      bdy_0x41700b = bdy_0x159b1c[_0xdba3a3];
+      $.UserName = decodeURIComponent(bdy_0x41700b.match(/pt_pin=([^; ]+)(?=;?)/) && bdy_0x41700b.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+      $.index = _0xdba3a3 + 1;
+      bdy_0x223dc8 = "";
+      console.log("\n******开始【京东账号" + $.index + "】" + $.UserName + "*********\n");
+      bdy_0x161909();
+      await bdy_0x1d68bc();
+      await bdy_0xb11c43();
+      await bdy_0x12209c();
     }
   }
-})().catch(_0x265016 => {
-  $.log("", "❌ " + $.name + ", 失败! 原因: " + _0x265016 + "!", "");
+  $.isNode() && bdy_0x14ee03 && (await bdy_0x1ada7d.sendNotify("" + $.name, "" + bdy_0x14ee03));
+})().catch(_0xfcfa18 => {
+  $.log("", "❌ " + $.name + ", 失败! 原因: " + _0xfcfa18 + "!", "");
 }).finally(() => {
   $.done();
 });
-async function bdy_0x26af4d() {
+async function bdy_0xb11c43() {
   try {
-    $.commentWareList = [];
-    $.caidanList = [];
-    await bdy_0x43cdfa();
-    if (!$.maxPage) {
-      console.log("获取待评价数据失败");
-      return;
-    }
-    if ($.maxPage > 1) {
-      await $.wait(2000);
-      await bdy_0x43cdfa($.maxPage);
-      $.commentWareList.length == 0 && (await $.wait(2000), await bdy_0x43cdfa($.maxPage - 1));
-    }
-    await $.wait(1000);
-    console.log("当前有" + Number($.sdnum) + "个待评价晒单，开始评价最后一页的" + $.commentWareList.length + "个商品...");
-    for (let _0x30b173 of $.commentWareList.reverse()) {
-      let _0x471316 = [],
-        _0x4e309f = [],
-        _0x5509c9 = "",
-        _0x22cde2 = [];
-      bdy_0x355f78 = [];
-      $.log("\n去评价 👉 " + _0x30b173.wname);
-      if (_0x30b173.commentRewardStatus == "1") {
-        await bdy_0x3747a7(_0x30b173.orderId, _0x30b173.wareId);
-        console.log($.rewardInfo);
-        console.log("要求至少" + $.wnezi + "字," + $.saitu + "图");
-      } else {
-        _0x30b173.estJingBean > 0 && $.log("评价完成最多可得 " + _0x30b173.estJingBean + " 豆 🥔");
-      }
-      if (bdy_0x25996d.filter(_0x3d9b41 => _0x30b173.wname.includes(_0x3d9b41)).length == 0) {
-        console.log("\n开始获取商品好评和图片...");
-        await $.wait(5000);
-        await bdy_0x1f77d5(_0x30b173.wareId);
-        $.maxPage > 1 && (await $.wait(1000), await bdy_0x1f77d5(_0x30b173.wareId, Math.floor(Math.random() * Math.min.apply(null, [$.maxPage, 10]) + 2)));
-        await $.wait(2000);
-        for (const _0x2310a5 of bdy_0x355f78) {
-          if (_0x2310a5.commentInfo.pictureInfoList) {
-            for (const _0x290516 of _0x2310a5.commentInfo.pictureInfoList || {}) {
-              if (_0x290516.mediaType != "2") {
-                let _0x295320 = "";
-                if (_0x290516.picURL.indexOf("dpg") !== -1) {
-                  _0x295320 = _0x290516.picURL.replace(/s[0-9]{3}x[0-9]{3}_(.*).dpg/g, "$1");
-                } else {
-                  if (_0x290516.picURL.indexOf("webp") !== -1) {
-                    _0x295320 = _0x290516.picURL.replace(/s[0-9]{3}x[0-9]{3}_(.*).webp/g, "$1");
-                  } else {
-                    _0x290516.picURL.indexOf("avif") !== -1 && (_0x295320 = _0x290516.picURL.replace(/s[0-9]{3}x[0-9]{3}_(.*).avif/g, "$1"));
-                  }
-                }
-                _0x295320 != "" && _0x471316.push(_0x295320);
-              }
-            }
-          }
-          _0x2310a5.commentInfo.commentScore === "5" && _0x2310a5.commentInfo.commentData.length > bdy_0xa54c7c && _0x4e309f.push(_0x2310a5.commentInfo.commentData);
-        }
-        for (let _0x14355f of bdy_0x6bf456) {
-          _0x4e309f = _0x4e309f.filter(_0x40b741 => !_0x40b741.includes(_0x14355f));
-        }
-        if (_0x4e309f.length > 2) {
-          _0x5509c9 = bdy_0x424316(_0x4e309f);
-        } else {
-          _0x5509c9 = bdy_0x424316(bdy_0x239a20);
-        }
-        if (_0x471316.length >= 2) {
-          let _0x592b5f = bdy_0x6fa3f2(_0x471316, 2);
-          _0x22cde2 = _0x592b5f.slice(0, _0x592b5f.length).map(_0x47db34 => ({
-            picUrl: _0x47db34
-          }));
-        }
-      } else {
-        console.log("赠品权益，只发布文字评价");
-        _0x5509c9 += bdy_0x4c3e4c(bdy_0x32d3ec);
-      }
-      _0x5509c9 = _0x5509c9.replace(/\*/gi, "");
-      _0x30b173.estJingBean > 0 && _0x5509c9.length < 60 && ($.log("评价有豆，字数不够，我在凑点..."), _0x5509c9 += " " + bdy_0x424316(bdy_0x192311));
-      if (_0x30b173.commentRewardStatus == "1") {
-        _0x5509c9.length < Number($.wnezi) && (_0x5509c9 += " " + bdy_0x424316(bdy_0x192311));
-        _0x5509c9.length < Number($.wnezi) && (_0x5509c9 += " 好评了，好评了，好评了，好评了，好评了，好评了，好评了，好评了，好评了，好评了，好评了，好评了，好评了，好评了");
-        let _0x34a3dc = bdy_0x6fa3f2(_0x471316, Math.max(2, Number($.saitu)));
-        _0x22cde2 = _0x34a3dc.slice(0, _0x34a3dc.length).map(_0x41c951 => ({
-          picUrl: _0x41c951
-        }));
-      }
-      if (_0x22cde2.length != 0 && _0x4e309f.length > 2) {
-        console.log("成功获取到图片和评价，去发布✍️✍️✍️...\n");
-        const _0x53a77d = {
-          mediasExt: "[{\"VideoIsEditCover\":\"0\",\"ImagePropId\":\"0\",\"ImageTakePhotoFilterId\":\"0\",\"ImageIsCrop\":\"0\",\"VideoIsEditCrop\":\"0\",\"VideoEditFilterId\":\"0\",\"VideoMusicId\":\"0\",\"ImageEditFilterId\":\"0\",\"VideoPropId\":\"0\",\"TakeRate\":\"0\",\"VideoRecordIsMakup\":\"0\",\"ImageTakePhotoIsMakup\":\"0\",\"VideoRecordFilterId\":\"0\",\"ImageFontId\":\"0\",\"FromType\":\"1\",\"ImageStrickId\":\"0\"},{\"VideoIsEditCover\":\"0\",\"ImagePropId\":\"0\",\"ImageTakePhotoFilterId\":\"0\",\"ImageIsCrop\":\"0\",\"VideoIsEditCrop\":\"0\",\"VideoEditFilterId\":\"0\",\"VideoMusicId\":\"0\",\"ImageEditFilterId\":\"0\",\"VideoPropId\":\"0\",\"TakeRate\":\"0\",\"VideoRecordIsMakup\":\"0\",\"ImageTakePhotoIsMakup\":\"0\",\"VideoRecordFilterId\":\"0\",\"ImageFontId\":\"0\",\"FromType\":\"1\",\"ImageStrickId\":\"0\"}]"
-        };
-        const _0x125cd3 = {
-          productId: _0x30b173.wareId,
-          kocSynFlag: "0",
-          categoryList: _0x30b173.categoryList,
-          voucherStatus: "0",
-          extInfo: _0x53a77d,
-          officerScore: "1699",
-          anonymousFlag: "1",
-          commentScore: "5",
-          shopType: "0",
-          orderId: _0x30b173.orderId,
-          shopId: _0x30b173.shopId,
-          addPictureFlag: "0",
-          commentData: _0x5509c9,
-          pictureInfoList: _0x22cde2,
-          officerLevel: "3",
-          isCommentTagContent: "0"
-        };
-        await bdy_0x1f7288("pubComment", _0x125cd3);
-      } else {
-        if (_0x22cde2.length != 0 && _0x4e309f.length <= 2) {
-          console.log("成功获取到图片，但没有获取到评价内容，使用内置评价，去发布✍️✍️✍️...\n");
-          const _0x6c1bce = {
-            mediasExt: "[{\"VideoIsEditCover\":\"0\",\"ImagePropId\":\"0\",\"ImageTakePhotoFilterId\":\"0\",\"ImageIsCrop\":\"0\",\"VideoIsEditCrop\":\"0\",\"VideoEditFilterId\":\"0\",\"VideoMusicId\":\"0\",\"ImageEditFilterId\":\"0\",\"VideoPropId\":\"0\",\"TakeRate\":\"0\",\"VideoRecordIsMakup\":\"0\",\"ImageTakePhotoIsMakup\":\"0\",\"VideoRecordFilterId\":\"0\",\"ImageFontId\":\"0\",\"FromType\":\"1\",\"ImageStrickId\":\"0\"},{\"VideoIsEditCover\":\"0\",\"ImagePropId\":\"0\",\"ImageTakePhotoFilterId\":\"0\",\"ImageIsCrop\":\"0\",\"VideoIsEditCrop\":\"0\",\"VideoEditFilterId\":\"0\",\"VideoMusicId\":\"0\",\"ImageEditFilterId\":\"0\",\"VideoPropId\":\"0\",\"TakeRate\":\"0\",\"VideoRecordIsMakup\":\"0\",\"ImageTakePhotoIsMakup\":\"0\",\"VideoRecordFilterId\":\"0\",\"ImageFontId\":\"0\",\"FromType\":\"1\",\"ImageStrickId\":\"0\"}]"
-          };
-          const _0x364505 = {
-            productId: _0x30b173.wareId,
-            kocSynFlag: "0",
-            categoryList: _0x30b173.categoryList,
-            voucherStatus: "0",
-            extInfo: _0x6c1bce,
-            officerScore: "1699",
-            anonymousFlag: "1",
-            commentScore: "5",
-            shopType: "0",
-            orderId: _0x30b173.orderId,
-            shopId: _0x30b173.shopId,
-            addPictureFlag: "0",
-            commentData: _0x5509c9,
-            pictureInfoList: _0x22cde2,
-            officerLevel: "3",
-            isCommentTagContent: "0"
-          };
-          await bdy_0x1f7288("pubComment", _0x364505);
-        } else {
-          if (_0x22cde2.length == 0 && _0x4e309f.length > 2) {
-            console.log("没有获取到图片，但获取到评价，去发布✍️✍️✍️...\n");
-            const _0x437d1a = {
-              productId: _0x30b173.wareId,
-              kocSynFlag: "0",
-              categoryList: _0x30b173.ategoryList,
-              voucherStatus: "0",
-              officerScore: "1699",
-              anonymousFlag: "1",
-              commentScore: "5",
-              shopType: "0",
-              orderId: _0x30b173.orderId,
-              shopId: _0x30b173.shopId,
-              addPictureFlag: "0",
-              commentData: _0x5509c9,
-              pictureInfoList: "",
-              officerLevel: "3",
-              isCommentTagContent: "0"
-            };
-            await bdy_0x1f7288("pubComment", _0x437d1a);
-          } else {
-            bdy_0x355f78.length <= 1 && (console.log("没有获取到评价和图片,使用内置文字评价，去发布✍️✍️✍️...\n"), await bdy_0x1f7288("pubComment", {
-              productId: _0x30b173.wareId,
-              kocSynFlag: "0",
-              categoryList: _0x30b173.ategoryList,
-              voucherStatus: "0",
-              officerScore: "1699",
-              anonymousFlag: "1",
-              commentScore: "5",
-              shopType: "0",
-              orderId: _0x30b173.orderId,
-              shopId: _0x30b173.shopId,
-              addPictureFlag: "0",
-              commentData: _0x5509c9,
-              pictureInfoList: "",
-              officerLevel: "3",
-              isCommentTagContent: "0"
-            }));
-          }
-        }
-      }
-      console.log("评价内容(" + _0x5509c9.length + "字) ：" + _0x5509c9);
-      if (_0x22cde2.length != 0) {
-        console.log("晒图详情：");
-        _0x22cde2.forEach(_0x5cdf3c => console.log(_0x5cdf3c.picUrl));
+    bdy_0x5c79ce && (await bdy_0x3f2166());
+    $.score = 0;
+    $.earn = false;
+    await bdy_0x3b7ac5(-1);
+    await bdy_0x3b7ac5(16);
+    await bdy_0x3b7ac5(6);
+    for (let _0x433c01 = 0; _0x433c01 < 5; ++_0x433c01) {
+      $.canDo = false;
+      await bdy_0x3b7ac5();
+      if (!$.canDo) {
+        break;
       }
       await $.wait(1000);
     }
-  } catch (_0x1274e6) {
-    console.log(_0x1274e6);
-    console.log("出错了，反馈作者修！！！");
+    await bdy_0x91d1c0();
+    await bdy_0x3b2195();
+    await bdy_0x3b7ac5(-1);
+  } catch (_0x359a48) {
+    $.logErr(_0x359a48);
   }
 }
-switch ($.type) {
-  case "nb":
-    const bdy_0xd1a69f = {
-      nb: nb
-    };
-    _0xf1f6le = bdy_0xd1a69f;
-    break;
-}
-async function bdy_0x1f77d5(_0x35b06d, _0x4abd77 = 1) {
-  const _0x26c076 = {
-    sortType: "5",
-    isCurrentSku: false,
-    sku: "" + _0x35b06d,
-    pictureCommentType: "A",
-    shieldCurrentComment: "1",
-    shopType: "0",
-    type: "4",
-    shadowMainSku: "0",
-    num: "10",
-    offset: "" + _0x4abd77,
-    pageNum: "" + _0x4abd77,
-    pageSize: "10"
-  };
-  s = await bdy_0x1f7288("getCommentListWithCard", _0x26c076);
-  bdy_0x355f78 = bdy_0x355f78.concat(s.commentInfoList);
-  $.maxPage = s.maxPage;
-}
-async function bdy_0x3354af(_0x1a58f8, _0x3e235c = 1) {
-  const _0x31fffa = {
-    bbtf: ""
-  };
-  const _0x505387 = {
-    category: "",
-    extInfo: _0x31fffa,
-    isCurrentSku: true,
-    num: "21",
-    offset: "" + _0x3e235c,
-    shadowMainSku: "0",
-    shopType: "0",
-    sku: "" + _0x1a58f8
-  };
-  s = await bdy_0x1f7288("getShowPictures", _0x505387);
-  $.commentInfoList = s.commentShowPicInfoList;
-  $.maxPage = s.maxPage;
-}
-async function bdy_0x451645(_0x390f39, _0x15613c = 1) {
-  const _0x46a925 = {
-    bbtf: ""
-  };
-  const _0x3a6905 = {
-    category: "",
-    extInfo: _0x46a925,
-    isCurrentSku: false,
-    num: "10",
-    offset: "" + _0x15613c,
-    shopType: "0",
-    sku: "" + _0x390f39,
-    type: "4"
-  };
-  s = await bdy_0x1f7288("getFoldCommentList", _0x3a6905);
-  bdy_0x355f78 = bdy_0x355f78.concat(s.commentInfoList);
-  $.maxPage = s.maxPage;
-}
-async function bdy_0x3747a7(_0x658018, _0x2578bf) {
-  s = await bdy_0x1f7288("commentEditInfo", {
-    allFloorsFlag: null,
-    business: "1",
-    evaAuraVersion: "120602",
-    lowSaleQuantity: null,
-    orderId: _0x658018,
-    qrType: "1",
-    sku: _0x2578bf
-  });
-  $.rewardInfo = s.commentFloorList[0].productCommentFloor.newCommentRewardMap?.["bannerInfo"] || "评价有礼";
-  $.wnezi = JSON.stringify(s).match(new RegExp("(\\d+)字")) ? JSON.stringify(s).match(new RegExp("(\\d+)字"))[1] : 60;
-  $.saitu = JSON.stringify(s).match(new RegExp("(\\d+)晒图")) ? JSON.stringify(s).match(new RegExp("(\\d+)晒图"))[1] : 2;
-}
-async function bdy_0x43cdfa(_0x52a8a3 = "1", _0x4ee184 = "1") {
-  const _0x4c281d = {
-    pageIndex: _0x52a8a3,
-    pageSize: "10",
-    planType: "1",
-    status: _0x4ee184
-  };
-  s = await bdy_0x1f7288("getCommentWareList", _0x4c281d, "12.5.0");
-  $.maxPage = s.commentWareListInfo?.["maxPage"];
-  $.sdnum = s.commentWareListInfo?.["wait4CommentCount"];
-  _0x4ee184 == "4" ? $.caidanList = s.commentWareListInfo?.["commentWareList"] : $.commentWareList = s.commentWareListInfo?.["commentWareList"];
-}
-async function bdy_0x1f7288(_0x11568f, _0x580f33) {
-  let _0x130913 = await bdy_0x53b0cb[bdy_0xc58a47](_0x11568f, _0x580f33, "11.0.2", "1"),
-    _0x4905b9 = {
-      url: "https://api.m.jd.com/client.action?functionId=" + _0x11568f,
-      body: "fuctionId=" + _0x11568f + "&" + _0x130913,
-      headers: {
-        Host: "api.m.jd.com",
-        accept: "*/*",
-        "user-agent": $.UA,
-        "accept-language": "zh-Hans-JP;q=1, en-JP;q=0.9, zh-Hant-TW;q=0.8, ja-JP;q=0.7, en-US;q=0.6",
-        Cookie: bdy_0xcc562f
-      }
-    };
-  return new Promise(_0x16d50c => {
-    $.dpost(_0x4905b9, (_0x4d051d, _0x3b6651, _0x527f7d) => {
-      try {
-        _0x4d051d ? console.log(_0x4d051d) : _0x527f7d = JSON.parse(_0x527f7d);
-        switch (_0x11568f) {
-          case "pubComment":
-            if (_0x527f7d.message) {
-              console.log(_0x527f7d.message);
-            }
-            break;
-          default:
-            break;
-        }
-      } catch (_0xb44862) {
-        console.log(_0xb44862);
-      } finally {
-        _0x16d50c(_0x527f7d);
-      }
-    });
-  });
-}
-function bdy_0x58d6fc() {
-  return Math.random().toString(16).slice(2, 10) + Math.random().toString(16).slice(2, 10) + Math.random().toString(16).slice(2, 10) + Math.random().toString(16).slice(2, 10) + Math.random().toString(16).slice(2, 10);
-}
-function bdy_0x424316(_0x45335b) {
-  return _0x45335b[Math.floor(Math.random() * _0x45335b.length)] || "";
-}
-function bdy_0x6fa3f2(_0x2d7ead, _0x452f91) {
-  const _0x5d17d4 = _0x2d7ead.slice();
-  let _0x143774 = _0x2d7ead.length,
-    _0x280e89,
-    _0xe4f2ca;
-  while (_0x143774--) {
-    _0xe4f2ca = Math.floor((_0x143774 + 1) * Math.random());
-    _0x280e89 = _0x5d17d4[_0xe4f2ca];
-    _0x5d17d4[_0xe4f2ca] = _0x5d17d4[_0x143774];
-    _0x5d17d4[_0x143774] = _0x280e89;
+async function bdy_0x3b2195() {
+  for (let _0x21207f of $.newShareCodes) {
+    if (!_0x21207f) {
+      continue;
+    }
+    console.log("去助力好友" + _0x21207f);
+    let _0x3fe859 = await bdy_0x4854ba(_0x21207f, 6);
+    if ([108, -1001].includes(_0x3fe859?.["data"]?.["bizCode"])) {
+      console.log("助力次数已满，跳出");
+      break;
+    }
+    await $.wait(1000);
   }
-  return _0x5d17d4.slice(0, _0x452f91);
 }
-function bdy_0x487412() {
-  const _0x489ad7 = {
-    url: "https://verify-dy-server-hchdzuwrsu.cn-hangzhou.fcapp.run/pingjia",
-    timeout: 30000
-  };
-  return new Promise(_0x4ec051 => {
-    $.post(_0x489ad7, async (_0x553584, _0x3092cd, _0x387b2f) => {
+function bdy_0x12209c() {
+  return new Promise(async _0x1e725c => {
+    bdy_0x223dc8 += "本次获得" + $.earn + "健康值，累计" + $.score + "健康值\n";
+    $.msg($.name, "", "京东账号" + $.index + " " + $.UserName + "\n" + bdy_0x223dc8);
+    _0x1e725c();
+  });
+}
+function bdy_0x3b7ac5(_0x4b9383 = "") {
+  return new Promise(_0x344717 => {
+    const _0x402086 = {
+      buildingId: "",
+      taskId: _0x4b9383 === -1 ? "" : _0x4b9383,
+      channelId: 1
+    };
+    $.dpost(bdy_0x776c59("jdhealth_getTaskDetail", _0x402086), async (_0x19fa3c, _0x10bd5e, _0x3e9487) => {
       try {
-        if (!_0x553584) {
-          if (_0x387b2f) {
-            _0x387b2f = JSON.parse(_0x387b2f);
-            if (_0x387b2f.status === 200) {
-              bdy_0xc58a47 = _0x387b2f.method;
+        if (_0x19fa3c) {
+          console.log(_0x19fa3c);
+        } else {
+          _0x3e9487 = $.toObj(_0x3e9487);
+          if (_0x4b9383 === -1) {
+            let _0xd1f64b = parseInt(parseFloat(bdy_0x553546(bdy_0x4fda62(() => _0x3e9487.data.result.userScore), "0")));
+            !$.earn ? ($.score = _0xd1f64b, $.earn = 1) : ($.earn = _0xd1f64b - $.score, $.score = _0xd1f64b);
+          } else {
+            if (_0x4b9383 === 6) {
+              bdy_0x4fda62(() => _0x3e9487.data.result.taskVos) && console.log("\n【账号（" + $.UserName + "）的" + $.name + "好友互助码】" + bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].assistTaskDetailVo.taskToken) + "\n");
+            } else {
+              if (_0x4b9383 === 22) {
+                console.log(bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].taskName) + "任务，完成次数：" + bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].times) + "/" + bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].maxTimes));
+                if (bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].times) === bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].maxTimes)) {
+                  return;
+                }
+                await bdy_0x4854ba(bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].shoppingActivityVos[0].taskToken), 22, 1);
+                await $.wait(1000 * (bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].waitDuration) || 3));
+                await bdy_0x4854ba(bdy_0x4fda62(() => _0x3e9487.data.result.taskVos[0].shoppingActivityVos[0].taskToken), 22, 0);
+              } else {
+                for (let _0x33eb3a of bdy_0x553546(bdy_0x4fda62(() => _0x3e9487.data.result.taskVos.filter(_0x2d1bd2 => ![19, 25, 15, 21].includes(_0x2d1bd2.taskType))), [])) {
+                  console.log(_0x33eb3a.taskName + "任务，完成次数：" + _0x33eb3a.times + "/" + _0x33eb3a.maxTimes);
+                  let _0x365f2d = _0x33eb3a.waitDuration || 0,
+                    _0x32dcce = _0x33eb3a.maxTimes - _0x33eb3a.times;
+                  for (let _0xf3db2d = 0; _0xf3db2d < _0x32dcce; _0xf3db2d++) {
+                    if (_0x33eb3a.taskType === 13) {
+                      await bdy_0x4854ba(bdy_0x4fda62(() => _0x33eb3a.simpleRecordInfoVo.taskToken), bdy_0x4fda62(() => _0x33eb3a.taskId));
+                    } else {
+                      if (_0x33eb3a.taskType === 8) {
+                        if (_0x33eb3a.productInfoVos[_0xf3db2d].status == 2) {
+                          continue;
+                        }
+                        await bdy_0x4854ba(bdy_0x4fda62(() => _0x33eb3a.productInfoVos[_0xf3db2d].taskToken), bdy_0x4fda62(() => _0x33eb3a.taskId), 1);
+                        await $.wait(10000);
+                        await bdy_0x4854ba(bdy_0x4fda62(() => _0x33eb3a.productInfoVos[_0xf3db2d].taskToken), bdy_0x4fda62(() => _0x33eb3a.taskId), 0);
+                      } else {
+                        if (_0x33eb3a.taskType === 9) {
+                          if (_0x33eb3a.shoppingActivityVos[_0xf3db2d].status == 2) {
+                            continue;
+                          }
+                          console.log(_0x33eb3a.shoppingActivityVos[_0xf3db2d].title);
+                          await bdy_0x4854ba(bdy_0x4fda62(() => _0x33eb3a.shoppingActivityVos[_0xf3db2d].taskToken), bdy_0x4fda62(() => _0x33eb3a.taskId), 1);
+                          await $.wait(_0x365f2d * 1000);
+                          await bdy_0x4854ba(bdy_0x4fda62(() => _0x33eb3a.shoppingActivityVos[_0xf3db2d].taskToken), bdy_0x4fda62(() => _0x33eb3a.taskId), 0);
+                        } else {
+                          if (_0x33eb3a.taskType === 10) {
+                            if (_0x33eb3a.threeMealInfoVos[_0xf3db2d].status == 2) {
+                              continue;
+                            }
+                            await bdy_0x4854ba(bdy_0x4fda62(() => _0x33eb3a.threeMealInfoVos[_0xf3db2d].taskToken), bdy_0x4fda62(() => _0x33eb3a.taskId));
+                          } else {
+                            if (_0x33eb3a.taskType === 26 || _0x33eb3a.taskType === 3) {
+                              await bdy_0x4854ba(bdy_0x4fda62(() => _0x33eb3a.shoppingActivityVos[_0xf3db2d].taskToken), bdy_0x4fda62(() => _0x33eb3a.taskId));
+                            } else {
+                              if (_0x33eb3a.taskType === 1) {
+                                for (let _0x29142e of Object.keys(_0x33eb3a.followShopVo)) {
+                                  let _0x36585c = _0x33eb3a.followShopVo[_0x29142e];
+                                  if (_0x36585c.status !== 2) {
+                                    await bdy_0x4854ba(_0x36585c.taskToken, _0x33eb3a.taskId, 0);
+                                    break;
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    await $.wait(1000);
+                  }
+                }
+              }
             }
           }
         }
-      } catch (_0x5d9eb8) {
-        $.logErr(_0x5d9eb8, _0x3092cd);
+      } catch (_0x341f8e) {
+        console.log(_0x341f8e);
       } finally {
-        _0x4ec051(_0x387b2f);
+        _0x344717();
       }
     });
   });
 }
-function bdy_0x367389(_0x23c49d) {
-  const _0x50fcd1 = [],
-    _0x5d00b5 = /[\u4e00-\u9fa5]/;
-  for (let _0xd34f14 = 0; _0xd34f14 < _0x23c49d.length; _0xd34f14++) {
-    const _0xabb22a = _0x23c49d[_0xd34f14];
-    _0x5d00b5.test(_0xabb22a) && !_0x50fcd1.includes(_0xabb22a) && _0x50fcd1.push(_0xabb22a);
-  }
-  return _0x50fcd1.length;
+function bdy_0x4e550e(_0x306245, _0x344efd) {
+  return new Promise(_0x5adff7 => {
+    const _0xf6780c = {
+      taskId: 1
+    };
+    const _0x4fdf47 = bdy_0x776c59("jdhealth_doLottery", _0xf6780c);
+    $.post(_0x4fdf47, (_0xe696b9, _0x2023b4, _0xafc344) => {
+      try {
+        _0xe696b9 ? console.log(_0xe696b9) : (_0xafc344 = $.toObj(_0xafc344), _0xafc344.data.bizCode === 0 || _0xafc344.data.bizMsg === "success" ? console.log("领取" + _0xafc344.data.result.jingBeanNum + "京豆成功") : console.log(_0xafc344.data.bizMsg));
+      } catch (_0x3b20f3) {
+        console.log(_0x3b20f3);
+      } finally {
+        _0x5adff7(_0xafc344);
+      }
+    });
+  });
 }
-function bdy_0x4c3e4c(_0x3ae53a) {
-  for (let _0x1ddc96 = _0x3ae53a.length - 1; _0x1ddc96 > 0; _0x1ddc96--) {
-    const _0x2bc3de = Math.floor(Math.random() * (_0x1ddc96 + 1));
-    [_0x3ae53a[_0x1ddc96], _0x3ae53a[_0x2bc3de]] = [_0x3ae53a[_0x2bc3de], _0x3ae53a[_0x1ddc96]];
-  }
-  return _0x3ae53a.join(",");
+async function bdy_0x3f2166() {
+  return new Promise(async _0x202096 => {
+    const _0x11b53f = bdy_0x776c59("jdhealth_getCommodities");
+    $.post(_0x11b53f, async (_0x1d5ec9, _0x4dfe2e, _0x4ca9cd) => {
+      try {
+        if (_0x1d5ec9) {
+          console.log(_0x1d5ec9);
+        } else {
+          _0x4ca9cd = $.toObj(_0x4ca9cd);
+          let _0x48d37d = _0x4ca9cd.data.result.jBeans.filter(_0x225afb => _0x225afb.status !== 0 && _0x225afb.status !== 1);
+          if (_0x48d37d.length !== 0) {
+            for (let _0x3119f4 of Object.keys(_0x48d37d)) {
+              let _0x57580d = _0x48d37d[_0x3119f4];
+              _0x57580d.title === bdy_0x5c79ce && $.score >= _0x57580d.exchangePoints && (await $.wait(1000), await bdy_0x5413d0(_0x57580d.type, _0x57580d.id));
+            }
+          } else {
+            console.log("兑换京豆次数已达上限");
+          }
+        }
+      } catch (_0x2af094) {
+        console.log(_0x2af094);
+      } finally {
+        _0x202096(_0x4ca9cd);
+      }
+    });
+  });
 }
-function bdy_0x37e5f4() {
-  return new Promise(_0x545d0a => {
-    const _0x5379a4 = {
-      url: "https://plogin.m.jd.com/cgi-bin/ml/islogin",
-      headers: {},
+function bdy_0x5413d0(_0x7a90e3, _0x10171f) {
+  return new Promise(_0x157116 => {
+    const _0x446907 = {
+      commodityType: _0x7a90e3,
+      commodityId: _0x10171f
+    };
+    const _0x6f4a8d = bdy_0x776c59("jdhealth_exchange", _0x446907);
+    $.post(_0x6f4a8d, (_0xcbc8be, _0x42f87b, _0x314977) => {
+      try {
+        _0xcbc8be ? console.log(_0xcbc8be) : (_0x314977 = $.toObj(_0x314977), _0x314977.data.bizCode === 0 || _0x314977.data.bizMsg === "success" ? ($.score = _0x314977.data.result.userScore, console.log("兑换" + _0x314977.data.result.jingBeanNum + "京豆成功"), bdy_0x223dc8 += "兑换" + _0x314977.data.result.jingBeanNum + "京豆成功\n", $.isNode() && (bdy_0x14ee03 += "【京东账号" + $.index + "】 " + $.UserName + "\n兑换" + _0x314977.data.result.jingBeanNum + "京豆成功🎉" + ($.index !== bdy_0x159b1c.length ? "\n\n" : ""))) : console.log(_0x314977.data.bizMsg));
+      } catch (_0x3815ad) {
+        console.log(_0x3815ad);
+      } finally {
+        _0x157116(_0x314977);
+      }
+    });
+  });
+}
+function bdy_0x4854ba(_0x368e98, _0x3a4f47, _0x5413df = 0) {
+  return new Promise(_0x56ac4a => {
+    const _0x485ef0 = {
+      taskToken: _0x368e98,
+      taskId: _0x3a4f47,
+      actionType: _0x5413df
+    };
+    const _0x41c1c1 = bdy_0x776c59("jdhealth_collectScore", _0x485ef0);
+    $.dget(_0x41c1c1, (_0x125506, _0x22aadc, _0x1e07ce) => {
+      try {
+        if (_0x125506) {
+          console.log(_0x125506);
+        } else {
+          _0x1e07ce = $.toObj(_0x1e07ce);
+          if ([0, 1].includes(bdy_0x553546(bdy_0x4fda62(() => _0x1e07ce.data.bizCode), -1))) {
+            $.canDo = true;
+            if (bdy_0x4fda62(() => _0x1e07ce.data.result.score)) {
+              console.log("任务完成，获得：" + bdy_0x553546(bdy_0x4fda62(() => _0x1e07ce.data.result.score), "未知") + "健康能量");
+            } else {
+              console.log("任务领取：" + bdy_0x553546(bdy_0x4fda62(() => _0x1e07ce.data.bizMsg), JSON.stringify(_0x1e07ce)));
+            }
+          } else {
+            console.log("任务失败：" + bdy_0x553546(bdy_0x4fda62(() => _0x1e07ce.data.bizMsg), JSON.stringify(_0x1e07ce)));
+          }
+        }
+      } catch (_0x4aaeed) {
+        console.log(_0x4aaeed);
+      } finally {
+        _0x56ac4a(_0x1e07ce);
+      }
+    });
+  });
+}
+function bdy_0x91d1c0() {
+  return new Promise(_0x56e216 => {
+    $.dget(bdy_0x776c59("jdhealth_collectProduceScore", {}), (_0x52939d, _0x483e1d, _0x1fa47a) => {
+      try {
+        if (_0x52939d) {
+          console.log(_0x52939d);
+        } else {
+          _0x1fa47a = $.toObj(_0x1fa47a);
+          if (bdy_0x4fda62(() => _0x1fa47a.data.bizCode) === 0) {
+            if (bdy_0x4fda62(() => _0x1fa47a.data.result.produceScore)) {
+              console.log("任务完成成功，获得：" + bdy_0x553546(bdy_0x4fda62(() => _0x1fa47a.data.result.produceScore), "未知") + "能量");
+            } else {
+              console.log("任务领取结果：" + bdy_0x553546(bdy_0x4fda62(() => _0x1fa47a.data.bizMsg), JSON.stringify(_0x1fa47a)));
+            }
+          } else {
+            console.log("任务完成失败：" + bdy_0x553546(bdy_0x4fda62(() => _0x1fa47a.data.bizMsg), JSON.stringify(_0x1fa47a)));
+          }
+        }
+      } catch (_0x270771) {
+        console.log(_0x270771);
+      } finally {
+        _0x56e216();
+      }
+    });
+  });
+}
+function bdy_0x776c59(_0x5405be, _0xa33640 = {}) {
+  const _0x549780 = {
+    Host: "api.m.jd.com",
+    Cookie: bdy_0x41700b,
+    origin: "https://h5.m.jd.com",
+    referer: "https://h5.m.jd.com/",
+    "accept-language": "zh-cn",
+    "accept-encoding": "gzip, deflate, br",
+    accept: "application/json, text/plain, */*",
+    "Content-Type": "application/x-www-form-urlencoded",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "User-Agent": $.UA,
+    "x-requested-with": "com.jingdong.app.mall"
+  };
+  return {
+    url: bdy_0xfa08f8 + "?functionId=" + _0x5405be + "&body=" + JSON.stringify(_0xa33640) + "&client=wh5&clientVersion=1.0.0&uuid=",
+    headers: _0x549780,
+    ciphers: "TLS_AES_256_GCM_SHA384"
+  };
+}
+function bdy_0x3d6621(_0x5aeba0) {
+  try {
+    if (typeof JSON.parse(_0x5aeba0) == "object") {
+      return true;
+    }
+  } catch (_0x42cc82) {
+    console.log(_0x42cc82);
+    console.log("京东服务器访问数据为空，请检查自身设备网络情况");
+    return false;
+  }
+}
+function bdy_0x795e94() {
+  console.log("开始");
+  return new Promise(async _0x16744e => {
+    const _0x1268c3 = {
+      url: "https://cdn.jsdelivr.net/gh/6dylan6/updateTeam@main/shareCodes/health.json",
       timeout: 10000
     };
-    _0x5379a4.headers.Cookie = bdy_0xcc562f;
-    _0x5379a4.headers.referer = "https://h5.m.jd.com/";
-    _0x5379a4.headers["User-Agent"] = $.UA;
-    $.get(_0x5379a4, (_0x6b820, _0x45d744, _0x39ae73) => {
+    $.get(_0x1268c3, (_0x252b77, _0x304190, _0x155fac) => {
       try {
-        if (_0x39ae73) {
-          _0x39ae73 = JSON.parse(_0x39ae73);
-          if (!(_0x39ae73.islogin === "1")) {
-            _0x39ae73.islogin === "0" && ($.isLogin = false);
-          }
-        }
-      } catch (_0x1cefa6) {
-        console.log(_0x1cefa6);
+        _0x252b77 ? (console.log(JSON.stringify(_0x252b77)), console.log($.name + " health/read API请求失败，请检查网路重试")) : _0x155fac && (_0x155fac = JSON.parse(_0x155fac));
+      } catch (_0x688ccd) {
+        $.logErr(_0x688ccd, _0x304190);
       } finally {
-        _0x545d0a();
+        _0x16744e(_0x155fac);
       }
     });
+    await $.wait(10000);
+    _0x16744e();
   });
+}
+function bdy_0x1d68bc() {
+  return new Promise(async _0x3c4daf => {
+    $.newShareCodes = [];
+    if ($.shareCodesArr[$.index - 1]) {
+      $.newShareCodes = $.shareCodesArr[$.index - 1].split("@");
+    } else {
+      const _0x5d1bcc = $.index > bdy_0x54aaa3.length ? bdy_0x54aaa3.length - 1 : $.index - 1;
+      $.newShareCodes = bdy_0x54aaa3[_0x5d1bcc].split("@");
+    }
+    console.log("第" + $.index + "个京东账号将要助力的好友" + JSON.stringify($.newShareCodes));
+    _0x3c4daf();
+  });
+}
+function bdy_0x3ab857() {
+  return new Promise(_0x136807 => {
+    console.log("开始获取" + $.name + "配置文件\n");
+    let _0x27868b = [];
+    if ($.isNode()) {
+      if (process.env.JDHEALTH_SHARECODES) {
+        process.env.JDHEALTH_SHARECODES.indexOf("\n") > -1 ? _0x27868b = process.env.JDHEALTH_SHARECODES.split("\n") : _0x27868b = process.env.JDHEALTH_SHARECODES.split("&");
+      }
+    }
+    $.shareCodesArr = [];
+    $.isNode() && Object.keys(_0x27868b).forEach(_0x49cb62 => {
+      _0x27868b[_0x49cb62] && $.shareCodesArr.push(_0x27868b[_0x49cb62]);
+    });
+    console.log("您提供了" + $.shareCodesArr.length + "个账号的" + $.name + "助力码\n");
+    _0x136807();
+  });
+}
+async function bdy_0x161909() {
+  $.UA = "jdapp;iPhone;10.1.5;13.1.2;" + bdy_0x32f58e(40) + ";network/wifi;model/iPhone8,1;addressid/2308460611;appBuild/167814;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1";
+}
+function bdy_0x32f58e(_0x214275) {
+  _0x214275 = _0x214275 || 32;
+  let _0x3ed372 = "abcdef0123456789",
+    _0x21a920 = _0x3ed372.length,
+    _0x16823d = "";
+  for (i = 0; i < _0x214275; i++) {
+    _0x16823d += _0x3ed372.charAt(Math.floor(Math.random() * _0x21a920));
+  }
+  return _0x16823d;
 }
 function Env(t, e) {
   "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
